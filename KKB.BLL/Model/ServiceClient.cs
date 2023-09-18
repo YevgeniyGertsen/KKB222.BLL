@@ -23,13 +23,15 @@ namespace KKB.BLL.Model
         /// <returns></returns>
         public bool RegsterClient(Client client)
         {
-            //if(repo.GetClientData(client.Email, client.Password)==null)
-            //{
+            try
+            {
+                repo.CreateClient(client);
+            }
+            catch
+            {
 
-            //}
-
-            repo.CreateClient(client);
-
+                throw new ArgumentException("ВОЗНИКЛА ОШИБКА ПОВТОРИТЕ ПОЗЖЕ");
+            }
             return true;
         }
 
@@ -41,7 +43,17 @@ namespace KKB.BLL.Model
         /// <returns></returns>
         public Client AuthorizeClient(string Email, string Password)
         {
-            return repo.GetClientData(Email, Password);
+            Client client = null;
+            try
+            {
+                client = repo.GetClientData(Email, Password);
+            }
+            catch
+            {
+                throw new ArgumentException("Воникла ошибка, попробуйте позже");
+            }          
+
+            return client;
         }
 
         /// <summary>
@@ -51,8 +63,14 @@ namespace KKB.BLL.Model
         /// <returns></returns>
         public bool UpdateClient(Client client)
         {
-
-            return true;
+            try
+            {
+                return repo.UpdateClient(client);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
 

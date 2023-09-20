@@ -9,6 +9,7 @@ namespace KKB.DAL.Model
     public class Account
     {
         public int Id { get; set; }
+        public int ClientId { get; set; }
         public double Balance { get; set; }
         public int Currence { get; set; }
         public double Limit { get; set; }

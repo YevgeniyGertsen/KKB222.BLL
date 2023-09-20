@@ -10,6 +10,7 @@ namespace KKB.ConsoleApp
             MenuAction menuAction = new MenuAction();
 
             Console.WriteLine("Добро пожаловать!");
+
             Console.WriteLine("1. Авторизация");
             Console.WriteLine("2. Регистрация");
             Console.WriteLine("3. Выход");
@@ -29,16 +30,23 @@ namespace KKB.ConsoleApp
                         }
                         else
                         {
-                            //Console.WriteLine("Авторизация успешна!");
                             SecondMenu(clent);
                         }
                         break;
                     }
                 case 2:
-                    Console.Clear();
-                    menuAction.Register();
-                    break;
-                default: Environment.Exit(0);
+                    {
+                        Console.Clear();
+                        Console.WriteLine("- Регистрация пользователя -");
+                        if (menuAction.Register())
+                        {
+                            Console.Clear();
+                            FirstMenu();
+                        }
+                        break;
+                    }
+                default:
+                    Environment.Exit(0);
                     break;
             }
         }
@@ -46,8 +54,33 @@ namespace KKB.ConsoleApp
         {
             MenuAction menuAction = new MenuAction();
             Console.Clear();
-            Console.WriteLine("Добро пожаловать {0} {1}",client.Name,client.SurName);
+
+            Console.WriteLine("Добро пожаловать {0}", client.ShortName);
+
             Console.WriteLine("Ваши счета: ...");
+            menuAction.ShowAccount(client.Id);
+            Console.WriteLine("");
+
+            Console.Write("Хотите открыть новый счет да/нет: ");
+            string choice = Console.ReadLine();
+
+            switch (choice)
+            {
+                case "да":
+                    {
+                        Random rand = new Random();
+                        AccountDTO account = new AccountDTO();
+                        account.Balance = 0;
+                        account.Currence = 398;
+                        account.CreateDate = DateTime.Now;
+                        account.ExpireDate = account.CreateDate.AddYears(15);
+                        account.TypeCard = 1;
+                        account.IBAN = "KZ"+ rand.Next(100,999);
+                        account.ClientId = client.Id;
+
+                        break;
+                    }
+            }
         }
     }
 }

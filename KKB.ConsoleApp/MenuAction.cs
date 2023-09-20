@@ -13,7 +13,7 @@ namespace KKB.ConsoleApp
             path = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         }
 
-        public void Register()
+        public bool Register()
         {
             ClientDTO client = new ClientDTO();
 
@@ -33,12 +33,14 @@ namespace KKB.ConsoleApp
             client.PhoneNumber = Console.ReadLine();
 
             Console.Write("Password: ");
+
             client.Password = Console.ReadLine();
             KKB.BLL.Model.ServiceClient service =
                 new BLL.Model.ServiceClient(path);
 
-            service.RegsterClient(client);
+           return service.RegsterClient(client);
         }
+
         public ClientDTO Auth()
         {
             Console.Write("email: ");
@@ -60,6 +62,7 @@ namespace KKB.ConsoleApp
             }
             return null;
         }
+
         public void UpdateClient(ClientDTO client)
         {
 
@@ -75,6 +78,23 @@ namespace KKB.ConsoleApp
             else
             {
                 Console.WriteLine("данные обновлены успешно");
+            }
+        }
+
+        public void ShowAccount(int clientId)
+        {
+            ServiceAccount service = new ServiceAccount(path);
+
+            var data = service.GetAllAccounts(clientId);
+
+            Console.WriteLine(": {0}", data.message);
+            foreach (AccountDTO account in data.accounts)
+            {
+                Console.WriteLine("{0}. {1}\t{2} {3}",
+                    account.Id,
+                    account.IBAN,
+                    account.Balance,
+                    account.Currence);
             }
         }
     }

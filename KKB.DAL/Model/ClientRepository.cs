@@ -24,17 +24,17 @@ namespace KKB.DAL.Model
             {
                 using (var db = new LiteDatabase(connectionString))
                 {
-                        clients = db.GetCollection<Client>("Client")
-                      .FindAll()
-                      .ToList();                                  
+                    clients = db.GetCollection<Client>("Client")
+                  .FindAll()
+                  .ToList();
                 }
             }
             catch (ArgumentNullException ae)
             {
                 message = ae.Message;
-            }           
+            }
             catch
-               when(string.IsNullOrWhiteSpace(connectionString))
+               when (string.IsNullOrWhiteSpace(connectionString))
             {
                 message = "Строка подключения к БД не корректна";
             }
@@ -44,7 +44,7 @@ namespace KKB.DAL.Model
             }
             finally
             {
-               // db.Dispose();
+                // db.Dispose();
             }
 
             return clients;
@@ -74,10 +74,8 @@ namespace KKB.DAL.Model
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
-
         }
 
         /// <summary>
@@ -113,7 +111,7 @@ namespace KKB.DAL.Model
                     return true;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }

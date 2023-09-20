@@ -1,9 +1,5 @@
-﻿using KKB.DAL.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using KKB.BLL.Model;
 
 namespace KKB.ConsoleApp
 {
@@ -25,7 +21,7 @@ namespace KKB.ConsoleApp
                 case 1:
                     {
                         Console.Clear();
-                        Client clent = menuAction.Auth();
+                        ClientDTO clent = menuAction.Auth();
 
                         if (clent == null)
                         {
@@ -46,7 +42,7 @@ namespace KKB.ConsoleApp
                     break;
             }
         }
-        public static void SecondMenu(Client client)
+        public static void SecondMenu(ClientDTO client)
         {
             MenuAction menuAction = new MenuAction();
             Console.Clear();

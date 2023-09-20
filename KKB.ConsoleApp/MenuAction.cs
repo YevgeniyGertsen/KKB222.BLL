@@ -1,11 +1,6 @@
-﻿using KKB.DAL.Model;
+﻿using KKB.BLL.Model;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KKB.ConsoleApp
 {
@@ -20,7 +15,7 @@ namespace KKB.ConsoleApp
 
         public void Register()
         {
-            Client client = new Client();
+            ClientDTO client = new ClientDTO();
 
             Console.Write("Name: ");
             client.Name = Console.ReadLine();
@@ -44,7 +39,7 @@ namespace KKB.ConsoleApp
 
             service.RegsterClient(client);
         }
-        public Client Auth()
+        public ClientDTO Auth()
         {
             Console.Write("email: ");
             string email = Console.ReadLine();
@@ -65,7 +60,7 @@ namespace KKB.ConsoleApp
             }
             return null;
         }
-        public void UpdateClient(Client client)
+        public void UpdateClient(ClientDTO client)
         {
 
             Console.WriteLine("введите новый емайл");

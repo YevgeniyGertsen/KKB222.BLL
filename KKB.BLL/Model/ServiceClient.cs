@@ -4,16 +4,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace KKB.BLL.Model
 {
     public class ServiceClient
     {
-        private ClientRepository repo = null;
+        private readonly ClientRepository repo = null;
+        private readonly IMapper iMapper;
 
         public ServiceClient(string connectionString)
         {
             repo = new ClientRepository(connectionString);
+            iMapper = BLLSettings.Init().CreateMapper();
         }
 
         /// <summary>
@@ -21,11 +24,11 @@ namespace KKB.BLL.Model
         /// </summary>
         /// <param name="client"></param>
         /// <returns></returns>
-        public bool RegsterClient(Client client)
+        public bool RegsterClient(ClientDTO client)
         {
             try
             {
-                repo.CreateClient(client);
+                repo.CreateClient(iMapper.Map<Client>(client));
             }
             catch
             {
@@ -41,17 +44,20 @@ namespace KKB.BLL.Model
         /// <param name="Email"></param>
         /// <param name="Password"></param>
         /// <returns></returns>
-        public Client AuthorizeClient(string Email, string Password)
+        public ClientDTO AuthorizeClient(string Email, string Password)
         {
-            Client client = null;
+            ClientDTO client = null;
             try
             {
-                client = repo.GetClientData(Email, Password);
+                //var _client = repo.GetClientData(Email, Password);
+                //client = iMapper.Map<ClientDTO>(_client);
+
+                client = iMapper.Map<ClientDTO>(repo.GetClientData(Email, Password));
             }
             catch
             {
                 throw new ArgumentException("Воникла ошибка, попробуйте позже");
-            }          
+            }
 
             return client;
         }
@@ -61,18 +67,16 @@ namespace KKB.BLL.Model
         /// </summary>
         /// <param name="client"></param>
         /// <returns></returns>
-        public bool UpdateClient(Client client)
+        public bool UpdateClient(ClientDTO client)
         {
             try
             {
-                return repo.UpdateClient(client);
+                return repo.UpdateClient(iMapper.Map<Client>(client));
             }
             catch
             {
                 return false;
             }
         }
-
-
     }
 }

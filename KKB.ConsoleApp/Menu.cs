@@ -1,10 +1,18 @@
 ﻿using System;
+using System.Configuration;
 using KKB.BLL.Model;
 
 namespace KKB.ConsoleApp
 {
     public static class Menu
     {
+        static string path = "";
+
+        static Menu()
+        {
+            path = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+        }
+
         public static void FirstMenu()
         {
             MenuAction menuAction = new MenuAction();
@@ -50,6 +58,7 @@ namespace KKB.ConsoleApp
                     break;
             }
         }
+
         public static void SecondMenu(ClientDTO client)
         {
             MenuAction menuAction = new MenuAction();
@@ -61,6 +70,7 @@ namespace KKB.ConsoleApp
             menuAction.ShowAccount(client.Id);
             Console.WriteLine("");
 
+            Console.WriteLine("---------------------||----------------");
             Console.Write("Хотите открыть новый счет да/нет: ");
             string choice = Console.ReadLine();
 
@@ -75,9 +85,16 @@ namespace KKB.ConsoleApp
                         account.CreateDate = DateTime.Now;
                         account.ExpireDate = account.CreateDate.AddYears(15);
                         account.TypeCard = 1;
-                        account.IBAN = "KZ"+ rand.Next(100,999);
+                        account.IBAN = "KZ" + rand.Next(100, 999);
                         account.ClientId = client.Id;
 
+                        ServiceAccount service = new ServiceAccount(path);
+                        var result = service.CreateAccountClient(account);
+
+                        if (result.result)
+                            Console.WriteLine(result.message);
+                        else
+                            SecondMenu(client);
                         break;
                     }
             }

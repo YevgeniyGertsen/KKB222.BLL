@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -78,5 +79,49 @@ namespace KKB.DAL.Model
 
             return result;
         }
+
+        public AccountReturnResult GetAccountById(int accountId)
+        {
+            AccountReturnResult result = new AccountReturnResult();
+
+            try
+            {
+                using (var db = new LiteDatabase(connectionString))
+                {
+                    result.Account = db.GetCollection<Account>("Account")
+                        .FindById(accountId);
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsError = true;
+                result.Exception = ex;
+            }
+
+            return result;
+        }
+
+        public AccountReturnResult Pay(Account accunt)
+        {
+            AccountReturnResult result = new AccountReturnResult();
+
+            try
+            {
+                using (var db = new LiteDatabase(connectionString))
+                {
+                    var accounts = db.GetCollection<Account>("Account");
+                    accounts.Update(accunt);
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsError = true;
+                result.Exception = ex;
+            }
+
+            return result;
+        }
+
+
     }
 }

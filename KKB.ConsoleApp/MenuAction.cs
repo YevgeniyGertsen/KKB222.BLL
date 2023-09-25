@@ -38,7 +38,7 @@ namespace KKB.ConsoleApp
             KKB.BLL.Model.ServiceClient service =
                 new BLL.Model.ServiceClient(path);
 
-           return service.RegsterClient(client);
+            return service.RegsterClient(client);
         }
 
         public ClientDTO Auth()
@@ -86,15 +86,32 @@ namespace KKB.ConsoleApp
             ServiceAccount service = new ServiceAccount(path);
 
             var data = service.GetAllAccounts(clientId);
-
             Console.WriteLine(": {0}", data.message);
-            foreach (AccountDTO account in data.accounts)
+
+            foreach (AccountDTO acc in data.accounts)
             {
                 Console.WriteLine("{0}. {1}\t{2} {3}",
-                    account.Id,
-                    account.IBAN,
-                    account.Balance,
-                    account.Currence);
+                    acc.Id,
+                    acc.IBAN,
+                    acc.Balance,
+                    acc.Currence);
+            }
+            Console.WriteLine("-------------------");
+            Console.Write("Выберете счет: ");
+            int selectedAccount = Int32.Parse(Console.ReadLine());
+
+            var account = service.GetAccount(selectedAccount);
+            if(account!=null)
+            {
+                Console.Clear();
+                Console.WriteLine("{0}", account.IBAN);
+                Console.WriteLine("от {0:dd.MM.yyyy}", account.CreateDate);
+                Console.WriteLine("баланс {0}", account.Balance);
+
+                Console.WriteLine("Выберите действие:");
+                Console.WriteLine("1. Пополнить");
+                Console.WriteLine("2. Перевести");
+                Console.WriteLine("3. Выписка");
             }
         }
     }

@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using KKB.DAL;
+using KKB.DAL.Interfaces;
 using KKB.DAL.Model;
 using System;
 using System.Collections.Generic;
@@ -11,12 +13,12 @@ namespace KKB.BLL.Model
 {
     public class ServiceAccount
     {
-        private readonly AccountRepository repo = null;
+        private readonly IRepository<Account> repo = null;
         private readonly IMapper iMapper;
 
         public ServiceAccount(string connectionString)
         {
-            repo = new AccountRepository(connectionString);
+            repo = new Repository<Account>(connectionString);
             iMapper = BLLSettings.Init().CreateMapper();
         }
 
@@ -26,10 +28,11 @@ namespace KKB.BLL.Model
         /// <returns></returns>
         public (string message, List<AccountDTO> accounts) GetAllAccounts(int clientId)
         {
-            var result = repo.GetAccounts(clientId);
-
+            var result = repo.Get();
+  
             return ((result.IsError==true) ? result.Exception.Message : "", 
-                iMapper.Map<List<AccountDTO>>(result.Accounts));
+                iMapper.Map<List<AccountDTO>>(result
+                                               .Datas.Where(w => w.ClientId.Equals(clientId))));
         }
 
         //public double GetAccountBalance(int clientId)
@@ -55,9 +58,8 @@ namespace KKB.BLL.Model
 
         public (bool result, string message) CreateAccountClient(AccountDTO account)
         {
-            var result = repo.CreateAccount(iMapper.Map<Account>(account));
+            var result = repo.Create(iMapper.Map<Account>(account));
 
-            //return (result.IsError, result?.Exception.Message);
             return (result.IsError, result.Exception!=null ?
                 result.Exception.Message : "");
         }
@@ -69,8 +71,7 @@ namespace KKB.BLL.Model
         /// <returns></returns>
         public AccountDTO GetAccount(int accountId)
         {
-            return iMapper.Map<AccountDTO>(repo.GetAccountById(accountId)
-                .Account);
+            return iMapper.Map<AccountDTO>(repo.GetData(accountId).Datas);
         }
     }
 }

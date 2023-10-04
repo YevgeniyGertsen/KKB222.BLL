@@ -9,8 +9,71 @@ namespace KKB.ConsoleApp
     {
         static void Main(string[] args)
         {
+
+
             Menu.FirstMenu();
             Console.ReadKey();
+        }
+    }
+
+    //организм
+    public abstract class Organizm
+    {
+        public string Name { get; set; }
+        public double MoveSpeed { get; set; }
+
+        public abstract void Move();
+        public abstract void Breeze();
+
+        public virtual string Eat()
+        {
+            return "Фотосинтезем";
+        }
+    }
+
+    public class Dog : Organizm
+    {
+        public new string Name { get; set; }
+        public override void Move()
+        {
+            
+        }
+        public override void Breeze()
+        {
+            
+        }
+        public override string Eat()
+        {
+            base.Name = "";
+            this.Name = "";
+           
+            //1 
+            return "ртом";
+            //2
+            //return base.Eat()+" ртом";
+        }
+    }
+
+    public sealed class Kolee : Dog
+    {
+
+    }
+
+    public class ChauChau: Kolee
+    {
+
+    }
+
+
+    public class Ameba : Organizm
+    {
+        public override void Move()
+        {
+
+        }
+        public override void Breeze()
+        {
+
         }
     }
 

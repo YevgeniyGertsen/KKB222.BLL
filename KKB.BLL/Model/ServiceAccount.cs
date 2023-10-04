@@ -11,16 +11,11 @@ using System.Threading.Tasks;
 
 namespace KKB.BLL.Model
 {
-    public class ServiceAccount
+    public class ServiceAccount : Service<Account>
     {
-        private readonly IRepository<Account> repo = null;
-        private readonly IMapper iMapper;
-
-        public ServiceAccount(string connectionString)
-        {
-            repo = new Repository<Account>(connectionString);
-            iMapper = BLLSettings.Init().CreateMapper();
-        }
+        public ServiceAccount(string connectionString) 
+            : base(connectionString)
+        { }
 
         /// <summary>
         /// Метод возвращает список счетов пользователя

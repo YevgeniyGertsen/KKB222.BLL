@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace KKB.DAL
 {
+    namespace GG
+    {
+
+    }
     public class Repository<T> : IRepository<T> 
     {
         private readonly string connectionString = "";

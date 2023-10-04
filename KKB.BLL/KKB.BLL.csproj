@@ -47,10 +47,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BLLSettings.cs" />
     <Compile Include="Model\AccountDTO.cs" />
     <Compile Include="Model\AddressDTO.cs" />
     <Compile Include="Model\ClientDTO.cs" />
+    <Compile Include="Model\Service.cs" />
     <Compile Include="Model\ServiceAccount.cs" />
     <Compile Include="Model\ServiceClient.cs" />
     <Compile Include="Model\ShortAccount.cs" />
